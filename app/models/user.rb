@@ -28,6 +28,8 @@ class User < ApplicationRecord
 
   validate :password_complexity
 
+  has_many :galleries, dependent: :destroy
+
   def password_complexity
     return if password.blank?
 
