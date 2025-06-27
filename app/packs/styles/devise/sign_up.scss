@@ -1,0 +1,52 @@
+@import "../variables.scss";
+
+body{
+    justify-content: center;
+    background-color: $back-ground-primary;
+}
+
+.form-field {
+    border-width: 3px
+}
+
+.button-submit-black {
+  background-color: #000;
+  color: #fff;
+  width: 100%;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  border: solid #000;
+
+  &:hover {
+    background-color: #fff;
+    color: #000;
+    border: solid #000;
+  }
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.bi-lock {
+    z-index: 10;
+    margin-top: 8px;
+    left: 15px;
+    position: absolute;
+}
+
+#toggle-password, #toggle-password-confirmation {
+    z-index: 10;
+    margin-top: 8px;
+    right: 15px;
+    cursor: pointer;
+    position: absolute;
+}
+
+@media (max-width: 576px) {
+    .no-border {
+        border: none;
+        box-shadow: none;
+    }
+}
