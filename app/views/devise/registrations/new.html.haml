@@ -1,0 +1,61 @@
+- append_stylesheet_pack_tag("auth")
+- append_javascript_pack_tag('auth')
+- content_for :title, 'Sign Up'
+- content_for :hide_header, true
+- content_for :hide_footer, true
+
+.row.justify-content-center.align-items-center.gx-0
+  .col-sm-6.col-xl-auto{style: "max-width: 450px;"}
+    .card.card-body.rounded-5.p-5.no-border
+      = simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+        
+        %h2.fw-bolder.fs-3.my-3
+          Create Your Account
+        
+        .form-group.position-relative
+          = f.label :username, "Username", class: "text-secondary small"
+          .input-group
+            .input-group-prepend.position-absolute{style: "z-index: 10; transform: translateY(40%); left: 5%;"}
+              %svg{xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", width: "20", height: "20", fill: "none", stroke: "currentColor", "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "2"}
+                %path{d: "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"}
+            = f.input :username, label: false, required: true,
+              wrapper_html: { class: "m-0 w-100 form-field" },
+              input_html: { class: "bg-white form-control p-2 ps-5 form-field" }
+
+        
+        .form-group.position-relative
+          = f.label :email, "Email address", class: "text-secondary small"
+          .input-group
+            .input-group-prepend.position-absolute{style: "z-index: 10; transform: translateY(40%); left: 5%;"}
+              %svg{xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", width: "20", height: "20", fill: "none", stroke: "currentColor", "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "2"}
+                %path{d: "M2 6 L22 6 22 20 2 20 Z M2 6 L12 14 22 6"}
+            = f.input :email, label: false, autofocus: true, required: true,
+              wrapper_html: { class: "m-0 w-100 form-field" },
+              input_html: { class: "bg-white form-control p-2 ps-5 form-field" }
+          
+        .form-group.position-relative
+          = f.label :password, class: "text-secondary small mt-2"
+          .input-group
+            = f.input :password, label: false, required: true,
+              wrapper_html: { class: "m-0 w-100" },
+              input_html: { class: "bg-white form-control p-2 ps-5 form-field", id: "password-field" }
+            %i.bi.bi-lock.fs-5
+            %i.bi.bi-eye-slash.fs-5#toggle-password.active
+
+        .form-group.position-relative
+          = f.label :password_confirmation, "Confirm password", class: "text-secondary small mt-2"
+          .input-group
+            = f.input :password_confirmation, label: false, required: true,
+              wrapper_html: { class: "m-0 w-100" },
+              input_html: { class: "bg-white form-control p-2 ps-5 form-field", id: "password-confirmation-field" }
+            %i.bi.bi-lock.fs-5
+            %i.bi.bi-eye-slash.fs-5#toggle-password-confirmation.active
+        
+        .d-flex.justify-content-center
+          %button.btn.button-submit-black.shadow-sm.fw-semibold{ type: :submit }
+            Create Account
+            
+        %p.text-secondary.fs-6.text-center.p-1.mt-1.mb-0
+          Already have an account?
+          %span
+            = link_to "Log in here", new_session_path(resource_name), class: "text-primary text-decoration-underline"

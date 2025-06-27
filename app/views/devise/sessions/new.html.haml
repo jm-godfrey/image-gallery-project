@@ -1,15 +1,48 @@
-- content_for :title, 'Log In'
+- content_for :title, 'Sign In'
+- content_for :hide_header, true
+- content_for :hide_footer, true
+- append_javascript_pack_tag('auth')
+- append_stylesheet_pack_tag('auth')
 
-.row.justify-content-center
-  .col-sm-6.col-lg-4
-    .card.card-light
+.row.justify-content-center.align-items-center.gx-0
+  .col-sm-6.col-xl-auto{style: "max-width: 450px;"}
+    .card.card-body.rounded-5.p-5.no-border
       = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-        .card-header
-          Log In
-        .card-body
-          = f.input :email, autofocus: true, required: true
-          = f.input :password, required: true
-        .card-footer
-          %button.btn.btn-primary{ type: :submit }
+        
+        %h2.fw-bolder.fs-3.fs-sm-5.my-xl-3
+          Welcome back
+        %p.text-secondary.fs-6
+          Log in by entering your email address and password.
+    
+        .form-group.position-relative
+          = f.label :email, "Email address", class: "text-secondary small"
+          .input-group
+            .input-group-prepend.position-absolute{style: "z-index: 10; top: 46%; transform: translateY(-50%); left: 5%;"}
+              %svg{xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", width: "20", height: "20", fill: "none", stroke: "currentColor", "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "2"}
+                %path{d: "M2 6 L22 6 22 20 2 20 Z M2 6 L12 14 22 6"}
+            = f.input :email, label: false, autofocus: true, required: true,
+              wrapper_html: { class: "m-0 w-100 form-field" },
+              input_html: { class: "bg-white form-control p-2 ps-5 form-field" }
+
+        .form-group.position-relative.mb-3
+          = f.label :password, "Password", for: "password-field", class: "text-secondary small mt-3"
+          .input-group
+            = f.input :password, label: false, required: true,
+              wrapper_html: { class: "m-0 w-100" },
+              input_html: { class: "bg-white form-control p-2 ps-5 form-field", id: "password-field" }
+
+            %i.bi.bi-lock.fs-5
+            %i.bi.bi-eye-slash.fs-5#toggle-password.active
+
+          
+        .forgot-password.mt-2
+          = link_to "Forgot password?", new_password_path(resource_name), class: "text-primary text-decoration-underline"
+        
+        .d-flex.justify-content-center
+          %button.btn.button-submit-black.shadow-sm.fw-semibold.fs-login{ type: :submit }
             Log in
-          .mt-3= render "devise/shared/links"
+            
+        %p.text-secondary.fs-6.text-center.p-1.mt-1
+          Don't have an account? 
+          %span
+            = link_to "Sign up here", new_registration_path(resource_name), class: "text-primary text-decoration-underline"

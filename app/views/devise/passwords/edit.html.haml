@@ -1,0 +1,36 @@
+- content_for :title, 'Password Reset'
+- content_for :hide_header, true
+- content_for :hide_footer, true
+- append_stylesheet_pack_tag('reset_password')
+- append_javascript_pack_tag('auth')
+
+.row.justify-content-center
+  .col-sm-6.col-xl-auto{style: "max-width: 450px;"}
+    .card.card-body.rounded-5.p-5.mt-40.no-border
+      = simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
+        = f.hidden_field :reset_password_token
+
+        %h2.fw-bolder.fs-4.text-primary
+          Reset your Password
+
+        .form-group.form-group-reset-password.position-relative
+          = f.label :password, "New Password" , class: "text-secondary small mt-3"
+          .input-group
+            = f.input :password, label: false, required: true,
+              wrapper_html: { class: "m-0 w-100" },
+              input_html: { class: "bg-white form-control p-2 ps-5 form-field", id: "password-field" }
+            %i.bi.bi-lock.fs-5
+            %i.bi.bi-eye-slash.fs-5#toggle-password.active
+
+        .form-group.position-relative.mb-3.mt-3
+          = f.label :password_confirmation, "Confirm new password", class: "text-secondary small"
+          .input-group
+            = f.input :password_confirmation, label: false, required: true,
+              wrapper_html: { class: "m-0 w-100" },
+              input_html: { class: "bg-white form-control p-2 ps-5 form-field", id: "password-confirmation-field" }
+            %i.bi.bi-lock.fs-5
+            %i.bi.bi-eye-slash.fs-5#toggle-password-confirmation.active
+        
+        .d-flex.justify-content-center.mt-5
+          %button.btn.hive-gold-bg.w-100.shadow-sm.fw-semibold{ type: :submit }
+            Reset Password
