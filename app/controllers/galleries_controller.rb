@@ -4,7 +4,8 @@ class GalleriesController < ApplicationController
 
   def index
     authenticate_user!
-    @galleries = current_user.galleries
+    @galleries = current_user.galleries.where.not(id: nil)
+    @gallery = current_user.galleries.build
   end
 
   def show
@@ -13,16 +14,12 @@ class GalleriesController < ApplicationController
     end
   end
 
-  def new
-    @gallery = current_user.galleries.build
-  end
-
   def create
     @gallery = current_user.galleries.build(gallery_params)
     if @gallery.save
-      redirect_to @gallery, notice: "Gallery created successfully."
+      redirect_to galleries_path, notice: "Gallery created successfully."
     else
-      render :new
+      redirect_to galleries_path, alert: "Something went wrong."
     end
   end
 
