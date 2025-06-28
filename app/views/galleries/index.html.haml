@@ -1,0 +1,23 @@
+%h1 My Galleries
+
+%button.btn.btn-success{ data: { bs_toggle: "modal", bs_target: "#newGalleryModal" } }
+  New Gallery
+
+.modal.fade#newGalleryModal{ tabindex: "-1", role: "dialog" }
+  .modal-dialog.modal-dialog-centered
+    .modal-content
+      .modal-header
+        %h5.modal-title New Gallery
+        %button.btn-close{ data: { bs_dismiss: "modal" } }
+      .modal-body
+        = render 'form', gallery: @gallery
+
+
+- @galleries.each do |gallery|
+  %div
+    %h2= link_to gallery.title, gallery_path(gallery)
+    %p= gallery.description
+    %p= gallery.private? ? "Private" : "Public"
+    = link_to "Edit", edit_gallery_path(gallery), class: "btn btn-sm btn-outline-secondary"
+    = link_to "Delete", gallery_path(gallery), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger"
+

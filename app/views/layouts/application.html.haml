@@ -37,6 +37,9 @@
             = link_to "Sign in", new_user_session_path
             or
             = link_to "Sign up", new_user_registration_path
+          - if user_signed_in?
+            = link_to "My Galleries", galleries_path, class: "btn btn-secondary"
+
 
     - if flash.present?
       .container-fluid.flash-messages
