@@ -75,6 +75,9 @@ gem 'sanitize_email'
 gem 'sentry-ruby'
 gem 'sentry-rails'
 
+gem "mini_magick"
+gem "image_processing", "~> 1.2"
+
 group :development do
   gem 'letter_opener'
   gem 'annotate'

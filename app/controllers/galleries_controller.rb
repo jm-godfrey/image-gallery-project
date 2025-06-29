@@ -12,6 +12,7 @@ class GalleriesController < ApplicationController
     if @gallery.private? && (!user_signed_in? || @gallery.user != current_user)
       redirect_to galleries_path, alert: "You don't have access to that gallery."
     end
+    @photos = @gallery.photos
   end
 
   def create

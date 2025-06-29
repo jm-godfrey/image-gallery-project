@@ -46,6 +46,9 @@ module Project
                              routing_specs:    false,
                              helper_specs:     false,
                              controller_specs: false
+
+      config.active_storage.variant_processor = :mini_magick
+      
     end
   end
 end

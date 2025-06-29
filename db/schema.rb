@@ -60,7 +60,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_27_144010) do
   create_table "galleries", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.boolean "private", default: false
+    t.boolean "private"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -1,2 +1,18 @@
-%h1 Galleries#show
-%p Find me in app/views/galleries/show.html.haml
+%h1= @gallery.title
+%p= @gallery.description
+- if @gallery.user == current_user
+  = link_to "Edit Gallery", edit_gallery_path(@gallery), class: "btn btn-outline-secondary"
+  = link_to "Delete Gallery", gallery_path(@gallery), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger"
+
+%h2 Photos
+= simple_form_for [@gallery, Photo.new], html: { multipart: true } do |f|
+  = f.input :image, as: :file, required: true
+  = f.button :submit, "Upload Photo", class: "btn btn-primary"
+
+.row.mt-4
+  - if not @photos.blank?
+    - @photos.each do |photo|
+      .col-md-4.mb-3
+        = image_tag photo.image.variant(resize_to_limit: [300, 300])
+        - if @gallery.user == current_user
+          = link_to "Delete", gallery_photo_path(@gallery, photo), method: :delete, data: { confirm: "Delete this photo?" }, class: "btn btn-sm btn-outline-danger mt-1"
