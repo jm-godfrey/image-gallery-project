@@ -1,14 +1,14 @@
 %h1= @gallery.title
 %p= @gallery.description
-- if @gallery.user == current_user
-  = link_to "Edit Gallery", edit_gallery_path(@gallery), class: "btn btn-outline-secondary"
+
+- if user_signed_in? && @gallery.user == current_user 
+  %button.btn.btn-outline-primary.mt-2{ data: { bs_toggle: "modal", bs_target: "#editGalleryModal" } }
+    Edit Gallery
   = link_to "Delete Gallery", gallery_path(@gallery), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger"
 
 %h2 Photos
-= simple_form_for [@gallery, Photo.new], html: { multipart: true } do |f|
-  = f.input :image, as: :file, required: true
-  = f.button :submit, "Upload Photo", class: "btn btn-primary"
 
+-# displays all photos as thumbnails - need to change so thumbnails are precomputed 
 .row.mt-4
   - if not @photos.blank?
     - @photos.each do |photo|
@@ -16,3 +16,23 @@
         = image_tag photo.image.variant(resize_to_limit: [300, 300])
         - if @gallery.user == current_user
           = link_to "Delete", gallery_photo_path(@gallery, photo), method: :delete, data: { confirm: "Delete this photo?" }, class: "btn btn-sm btn-outline-danger mt-1"
+
+-# upload for adding new photos
+- if user_signed_in? && @gallery.user == current_user
+  = simple_form_for [@gallery, Photo.new], html: { multipart: true } do |f|
+    = f.input :image, as: :file, required: true
+    = f.button :submit, "Upload Photo", class: "btn btn-primary"
+
+-# modal that appears for editing galleries
+.modal.fade#editGalleryModal{ tabindex: "-1", role: "dialog" }
+  .modal-dialog.modal-dialog-centered
+    .modal-content
+      .modal-header
+        %h5.modal-title Edit Gallery
+        %button.btn-close{ "data-bs-dismiss" => "modal" }
+      .modal-body
+        = simple_form_for(@gallery, url: gallery_path(@gallery), method: :patch, html: { class: "edit-gallery-form" }) do |f|
+          = f.input :title
+          = f.input :description
+          = f.input :private, as: :boolean, label: "Private?"
+          = f.submit "Update Gallery", class: "btn btn-primary"

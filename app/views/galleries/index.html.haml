@@ -8,6 +8,7 @@
   New Gallery
 
 
+-# modal that appears for creating a new gallery
 .modal.fade#newGalleryModal{ tabindex: "-1", role: "dialog" }
   .modal-dialog.modal-dialog-centered
     .modal-content
@@ -15,9 +16,17 @@
         %h5.modal-title New Gallery
         %button.btn-close{ "data-bs-dismiss" => "modal" }
       .modal-body
-        = render 'form', gallery: @gallery
+        = simple_form_for(@gallery) do |f|
+          .form-group
+            = f.input :title, required: true
+          .form-group
+            = f.input :description
+          .form-group
+            = f.input :private, as: :boolean, label: "Private gallery?"
+          .form-group
+            = f.submit "Create Gallery", class: "btn btn-primary"
 
-
+-# displays all galleries associated with the current user
 - @galleries.each do |gallery|
   %div
     %h2= link_to gallery.title, gallery_path(gallery)

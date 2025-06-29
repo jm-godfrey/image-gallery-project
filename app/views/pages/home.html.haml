@@ -1,9 +1,11 @@
 %h1 Public Galleries
 
-- @galleries.each do |gallery|
-  %div
-    - if gallery.private = false
+- if @galleries.present?
+  - @galleries.each do |gallery|
+    %div
       %h2= link_to gallery.title, gallery_path(gallery)
       %p= gallery.description
       %p.text-muted
         by #{gallery.user.username}
+- else
+  %p No galleries available.
