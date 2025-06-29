@@ -4,6 +4,13 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+    user ||= User.new
+
+    can :read, Gallery, private: false
+    can :read, Gallery, user_id: user.id
+
+    can :manage, Gallery, user_id: user.id
+    can :manage, Photo, gallery: { user_id: user.id }
     # Define abilities for the user here. For example:
     #
     #   return unless user.present?
