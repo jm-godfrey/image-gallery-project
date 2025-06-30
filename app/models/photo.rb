@@ -19,5 +19,8 @@ class Photo < ApplicationRecord
   belongs_to :gallery
   has_one :user, through: :gallery
 
-  has_one_attached :image
+  # preprocesses the thumbnail of an image on upload
+  has_one_attached :image do |attachable|
+    attachable.variant :thumbnail, resize_to_limit: [300, 300]
+  end
 end

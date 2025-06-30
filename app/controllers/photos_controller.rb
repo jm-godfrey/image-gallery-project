@@ -5,6 +5,7 @@ class PhotosController < ApplicationController
   def create
     @photo = @gallery.photos.build(photo_params)
     if @photo.save
+      @photo.image.variant(:thumbnail).processed
       redirect_to @gallery, notice: "Photo uploaded."
     else
       redirect_to @gallery, alert: "Upload failed."

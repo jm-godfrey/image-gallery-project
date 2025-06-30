@@ -13,7 +13,21 @@
   - if not @photos.blank?
     - @photos.each do |photo|
       .col-md-4.mb-3
-        = image_tag photo.image.variant(resize_to_limit: [300, 300])
+        %div{ style: "cursor: pointer;", data: { bs_toggle: "modal", bs_target: "#photoModal-#{photo.id}" } }
+          = image_tag photo.image.variant(:thumbnail)
+
+          -# modal for displaying the fullsized image when the thumbnail gets clicked
+          %div.modal.fade{id: "photoModal-#{photo.id}", tabindex: "-1", role: "dialog"}
+            .modal-dialog.modal-dialog-centered.modal-lg
+              .modal-content
+                .modal-header
+                  %h5.modal-title= photo.image.filename.to_s
+                  %button.btn-close{ "data-bs-dismiss" => "modal" }
+                .modal-body
+                  = image_tag photo.image, class: "img-fluid modal-img"
+                  %p.mt-2
+                    Uploaded at: 
+                    = photo.created_at.strftime("%d %b %Y %H:%M")
         - if @gallery.user == current_user
           = link_to "Delete", gallery_photo_path(@gallery, photo), method: :delete, data: { confirm: "Delete this photo?" }, class: "btn btn-sm btn-outline-danger mt-1"
 
