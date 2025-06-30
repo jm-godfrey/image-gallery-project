@@ -1,0 +1,18 @@
+.gallery-tile {
+  width: auto;
+  max-width: 100%;
+  text-align: center;
+
+  .gallery-image {
+    height: 200px; // fixed height for consistency
+    width: auto;   // width adjusts to maintain aspect ratio
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+  }
+
+  .gallery-image:hover {
+    transform: scale(1.02);
+  }
+}

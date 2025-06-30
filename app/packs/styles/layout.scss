@@ -6,6 +6,8 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  background-color: $back-ground-primary;
 
   footer {
     margin-top: auto;

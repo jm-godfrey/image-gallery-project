@@ -1,14 +1,16 @@
-%div.justify-content-center.align-items-center.gx-0
+%div.text-center
   %h1 Public Galleries
 
-  .row.mt-4
-    - if @galleries.present?
-      - @galleries.each do |gallery|
-        .col-md-4.mb-3
-          %div
-            %h2= link_to gallery.title, gallery_path(gallery)
-            %p= gallery.description
-            %p.text-muted
-              by #{gallery.user.username}
-    - else
-      %p No galleries available.
+- if @galleries.present?
+  .d-flex.flex-wrap.gap-3.justify-content-center
+    - @galleries.each do |gallery|
+      - first_photo = gallery.photos.first
+      .gallery-tile
+        - if first_photo
+          = link_to gallery_path(gallery), class: "d-block" do 
+            =image_tag first_photo.image.variant(resize_to_limit: [nil, 200]), class: "img-fluid gallery-image"
+          %h5.mt-2= link_to gallery.title, gallery_path(gallery)
+          %p.small.text-muted
+            by #{gallery.user.username}
+- else
+  %p No galleries available.
