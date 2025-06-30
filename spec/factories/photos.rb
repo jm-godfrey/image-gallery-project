@@ -17,6 +17,6 @@
 #
 FactoryBot.define do
   factory :photo do
-    gallery { nil }
+    association :gallery
   end
 end

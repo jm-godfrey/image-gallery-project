@@ -8,11 +8,13 @@
 
 %h2 Photos
 
--# displays all photos as thumbnails - need to change so thumbnails are precomputed 
+-# loops through all photos and displays associated images
 .row.mt-4
   - if not @photos.blank?
     - @photos.each do |photo|
       .col-md-4.mb-3
+
+        -# displays thumbnail version for each image
         %div{ style: "cursor: pointer;", data: { bs_toggle: "modal", bs_target: "#photoModal-#{photo.id}" } }
           = image_tag photo.image.variant(:thumbnail)
 
@@ -28,6 +30,7 @@
                   %p.mt-2
                     Uploaded at: 
                     = photo.created_at.strftime("%d %b %Y %H:%M")
+
         - if @gallery.user == current_user
           = link_to "Delete", gallery_photo_path(@gallery, photo), method: :delete, data: { confirm: "Delete this photo?" }, class: "btn btn-sm btn-outline-danger mt-1"
 

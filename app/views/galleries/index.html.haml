@@ -32,7 +32,6 @@
     %h2= link_to gallery.title, gallery_path(gallery)
     %p= gallery.description
     %p= gallery.private? ? "Private" : "Public"
-    = link_to "Edit", edit_gallery_path(gallery), class: "btn btn-sm btn-outline-secondary"
     = link_to "Delete", gallery_path(gallery), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger"
 
 - if @galleries.empty?

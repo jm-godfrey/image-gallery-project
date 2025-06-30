@@ -22,5 +22,8 @@ class Gallery < ApplicationRecord
   belongs_to :user
   has_many :photos, dependent: :destroy
 
+  validates :title, presence: true, uniqueness: true, length: { minimum: 3, maximum: 20 }
+
+
   scope :publicly_visible, -> { where(private: false)}
 end
