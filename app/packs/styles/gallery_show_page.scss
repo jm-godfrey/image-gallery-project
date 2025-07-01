@@ -1,0 +1,16 @@
+.photo-gallery .gallery-tile {
+  transition: transform 0.2s ease-in-out;
+  border-radius: 0.5rem;
+}
+
+.photo-gallery .gallery-tile:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+input[type="file"].form-control {
+  padding: 10px;
+  border-radius: 0.5rem;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}

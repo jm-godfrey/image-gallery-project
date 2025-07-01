@@ -1,11 +1,12 @@
-%h1 My Galleries
+%div.text-center
+  %h1 My Galleries
 
-%button.btn.btn-success{
-  "type" => "button",
-  "data-bs-toggle" => "modal",
-  "data-bs-target" => "#newGalleryModal"
-}
-  New Gallery
+  %button.btn.btn-success{
+    "type" => "button",
+    "data-bs-toggle" => "modal",
+    "data-bs-target" => "#newGalleryModal"
+  }
+    New Gallery
 
 
 -# modal that appears for creating a new gallery
@@ -27,13 +28,5 @@
             = f.submit "Create Gallery", class: "btn btn-primary"
 
 -# displays all galleries associated with the current user
-- @galleries.each do |gallery|
-  %div
-    %h2= link_to gallery.title, gallery_path(gallery)
-    %p= gallery.description
-    %p= gallery.private? ? "Private" : "Public"
-    = link_to "Delete", gallery_path(gallery), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger"
-
-- if @galleries.empty?
-  %p.text-muted You haven't created any galleries yet.
+= render 'galleries/gallery_list'
 

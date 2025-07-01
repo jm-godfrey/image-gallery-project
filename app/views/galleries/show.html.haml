@@ -1,44 +1,54 @@
-%h1= @gallery.title
-%p= @gallery.description
+.row.align-items-center.justify-content-between.mb-4.p-3.position-relative
+  .col
+    %h1= @gallery.title
+    %p.text-muted by #{@gallery.user.username}
+    %p= @gallery.description
 
-- if user_signed_in? && @gallery.user == current_user 
-  %button.btn.btn-outline-primary.mt-2{ data: { bs_toggle: "modal", bs_target: "#editGalleryModal" } }
-    Edit Gallery
-  = link_to "Delete Gallery", gallery_path(@gallery), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger"
+  - if user_signed_in? && @gallery.user == current_user
+    .col-auto 
+      .position-absolute.top-0.end-0.p-3
+        .dropdown
+          %button.btn.btn-sm.btn-outline-secondary.dropdown-toggle{ type: "button", id: "galleryActionsDropdown", data: { bs_toggle: "dropdown" }, aria: { expanded: "false" } }
+            %i.bi.bi-three-dots
 
-%h2 Photos
+          .dropdown-menu.dropdown-menu-end{ aria: { labelledby: "galleryActionsDropdown" } }
+            %button.dropdown-item{ data: { bs_toggle: "modal", bs_target: "#editGalleryModal" } }
+              %i.bi.bi-pencil.me-2
+              Edit Gallery
+
+            %button.dropdown-item{ data: { bs_toggle: "modal", bs_target: "#addPhotoModal" } }
+              %i.bi.bi-upload.me-2
+              Add Photo
+
+            = link_to gallery_path(@gallery), method: :delete, data: { confirm: "Are you sure?" }, class: "dropdown-item text-danger" do
+              %i.bi.bi-trash.me-2
+              Delete Gallery
+
 
 -# loops through all photos and displays associated images
-.row.mt-4
-  - if not @photos.blank?
+- if @photos.present?
+  .d-flex.flex-wrap.gap-3.justify-content-center.pt-3.pb-3.photo-gallery
     - @photos.each do |photo|
-      .col-md-4.mb-3
+      .gallery-tile.position-relative
+        = link_to url_for(photo.image), class: "d-block position-relative photo-thumbnail-link", data: { bs_toggle: "modal", bs_target: "#photoModal-#{photo.id}" } do
+          = image_tag photo.image.variant(:thumbnail), class: "img-fluid gallery-image rounded"
+          
+          - if @gallery.user == current_user
+            = link_to gallery_photo_path(@gallery, photo), method: :delete, data: { confirm: "Delete this photo?" }, class: "photo-delete-icon position-absolute top-0 end-0 m-1 p-1" do
+              %i.bi.bi-trash.text-danger
 
-        -# displays thumbnail version for each image
-        %div{ style: "cursor: pointer;", data: { bs_toggle: "modal", bs_target: "#photoModal-#{photo.id}" } }
-          = image_tag photo.image.variant(:thumbnail)
-
-          -# modal for displaying the fullsized image when the thumbnail gets clicked
-          %div.modal.fade{id: "photoModal-#{photo.id}", tabindex: "-1", role: "dialog"}
-            .modal-dialog.modal-dialog-centered.modal-lg
-              .modal-content
-                .modal-header
-                  %h5.modal-title= photo.image.filename.to_s
-                  %button.btn-close{ "data-bs-dismiss" => "modal" }
-                .modal-body
-                  = image_tag photo.image, class: "img-fluid modal-img"
-                  %p.mt-2
-                    Uploaded at: 
-                    = photo.created_at.strftime("%d %b %Y %H:%M")
-
-        - if @gallery.user == current_user
-          = link_to "Delete", gallery_photo_path(@gallery, photo), method: :delete, data: { confirm: "Delete this photo?" }, class: "btn btn-sm btn-outline-danger mt-1"
-
--# upload for adding new photos
-- if user_signed_in? && @gallery.user == current_user
-  = simple_form_for [@gallery, Photo.new], html: { multipart: true } do |f|
-    = f.input :image, as: :file, required: true
-    = f.button :submit, "Upload Photo", class: "btn btn-primary"
+      -# modal for displaying the fullsized image when the thumbnail gets clicked
+      %div.modal.fade{id: "photoModal-#{photo.id}", tabindex: "-1", role: "dialog"}
+        .modal-dialog.modal-dialog-centered.modal-lg
+          .modal-content
+            .modal-header
+              %h5.modal-title= photo.image.filename.to_s
+              %button.btn-close{ "data-bs-dismiss" => "modal" }
+            .modal-body
+              = image_tag photo.image, class: "img-fluid modal-img"
+              %p.mt-2
+                Uploaded at: 
+                = photo.created_at.strftime("%d %b %Y %H:%M")
 
 -# modal that appears for editing galleries
 .modal.fade#editGalleryModal{ tabindex: "-1", role: "dialog" }
@@ -53,3 +63,16 @@
           = f.input :description
           = f.input :private, as: :boolean, label: "Private?"
           = f.submit "Update Gallery", class: "btn btn-primary"
+
+-# modal that appears for adding photos
+.modal.fade#addPhotoModal{ tabindex: "-1", role: "dialog" }
+  .modal-dialog.modal-dialog-centered
+    .modal-content
+      .modal-header
+        %h5.modal-title Add Photo
+        %button.btn-close{ "data-bs-dismiss" => "modal" }
+
+      .modal-body
+        = simple_form_for [@gallery, Photo.new], html: { multipart: true, id: "add-photo-form" } do |f|
+          = f.input :image, as: :file, required: true, input_html: { id: "photo-upload", class: "form-control", accept: "image/*" }, label: "Choose photos"
+          = f.button :submit, "Upload", class: "btn btn-primary mt-2", disabled: true, id: "submit-photo-btn"

@@ -1,0 +1,21 @@
+- if @galleries.present?
+  .d-flex.flex-wrap.gap-3.justify-content-center.pt-3
+
+    - @galleries.each do |gallery|
+      - first_photo = gallery.photos.first
+
+      .gallery-tile
+        - if first_photo
+
+          = link_to gallery_path(gallery), class: "d-block position-relative" do
+
+            = image_tag first_photo.image.variant(:thumbnail), class: "img-fluid gallery-image"
+            .overlay-gradient
+            .overlay-title= gallery.title
+
+          %p.small.text-muted.mt-1
+            by #{gallery.user.username}
+
+- else
+  %div.text-center
+    %p No galleries created yet.

@@ -3,6 +3,19 @@
   max-width: 100%;
   text-align: left;
 
+  .photo-delete-icon {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    font-size: 1.2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  &:hover .photo-delete-icon {
+    opacity: 1;
+  }
+
   .gallery-image {
     border: 3px solid white;
     height: 200px;

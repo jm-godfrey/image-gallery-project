@@ -1,0 +1,39 @@
+.navbar .btn {
+  border-radius: 999px; // oval shape
+  padding: 0.375rem 1rem;
+  font-weight: 500;
+}
+
+.navbar .form-control {
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.navbar .navbar-brand img {
+  max-height: 50px;
+}
+
+.dropdown-menu {
+  min-width: 180px;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+
+  .dropdown-item {
+    padding: 0.5rem 1rem;
+
+    &:hover {
+      background-color: #f8f9fa;
+      color: #000;
+    }
+  }
+
+  .text-danger {
+    font-weight: 500;
+  }
+}
+
+.sign-up-link {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+}
