@@ -20,9 +20,10 @@ class Photo < ApplicationRecord
   has_one :user, through: :gallery
 
   validates :image, presence: true
+  
   # preprocesses the thumbnail of an image on upload
   has_one_attached :image do |attachable|
-    attachable.variant :thumbnail, resize_to_limit: [300, 300]
+    attachable.variant :thumbnail, resize_to_limit: [nil, 200]
   end
 
   validate :image_type
@@ -37,5 +38,5 @@ class Photo < ApplicationRecord
       errors.add(:image, "must be a JPEG, PNG, GIF, or WEBP")
     end
   end
-  
+
 end

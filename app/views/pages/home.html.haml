@@ -8,15 +8,22 @@
 
 - if @galleries.present?
   .d-flex.flex-wrap.gap-3.justify-content-center
+
     - @galleries.each do |gallery|
       - first_photo = gallery.photos.first
+
       .gallery-tile
         - if first_photo
-          = link_to gallery_path(gallery), class: "d-block position-relative" do 
-            =image_tag first_photo.image.variant(resize_to_limit: [nil, 200]), class: "img-fluid gallery-image"
+
+          = link_to gallery_path(gallery), class: "d-block position-relative" do
+
+            = image_tag first_photo.image.variant(:thumbnail), class: "img-fluid gallery-image"
             .overlay-gradient
             .overlay-title= gallery.title
+
           %p.small.text-muted.mt-1
             by #{gallery.user.username}
+
 - else
-  %p No galleries available.
+  %div.text-center
+    %p No galleries available.

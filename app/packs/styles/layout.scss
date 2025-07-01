@@ -7,8 +7,11 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   background-color: whitesmoke;
+
+  main {
+    padding-top: 80px;
+  }
 
   footer {
     margin-top: auto;

@@ -1,0 +1,25 @@
+%header.navbar.navbar-expand-lg.bg-light.fixed-top.shadow-mb
+  .container-fluid
+    = link_to root_path, class: 'navbar-brand d-flex align-items-center gap-2' do
+      = image_pack_tag 'images/Gallery_logo_small_trimmed.png', height: 50
+
+    %button.navbar-toggler{ type: :button, data: { bs_toggle: :collapse, bs_target: '#navbar-content' }, aria: { controls: 'navbar-content', expanded: 'false', label: 'Toggle navigation' } }
+      %span.navbar-toggler-icon
+
+    #navbar-content.collapse.navbar-collapse
+      .d-flex.flex-grow-1.align-items-center.gap-3
+        / Search bar
+        = form_with url: search_path, method: :get, class: "d-flex flex-grow-1", local: true do |f|
+          = f.search_field :query, class: "form-control me-2", placeholder: "Search galleries..."
+
+        - if user_signed_in?
+          = link_to "My Galleries", galleries_path, class: "btn btn-outline-secondary"
+
+      / Right side of navbar
+      .ms-auto.d-flex.align-items-center.gap-3
+        - if user_signed_in?
+          %span.text-muted.me-2 Logged in as #{current_user.username}
+          = link_to "Log out", destroy_user_session_path, method: :delete, class: "btn btn-outline-danger btn-sm"
+        - else
+          = link_to "Sign In", new_user_session_path, class: "btn btn-outline-primary btn-sm"
+          = link_to "Sign Up", new_user_registration_path, class: "btn btn-primary btn-sm"

@@ -19,39 +19,13 @@
     = javascript_pack_tag 'application', defer: true 
 
   %body
-    %header.navbar.navbar-expand-lg.bg-light.mb-3
-      .container-fluid
-        = link_to '#', class: 'navbar-brand' do
-          = image_pack_tag 'images/Gallery_logo_small_trimmed.png', height: 50
-        %button.navbar-toggler{ type: :button, data: { bs_toggle: :collapse, bs_target: '#navbar-content' }, aria: { controls: 'navbar-content', expanded: 'false', label: 'Toggle navigation' } }
-          %span.navbar-toggler-icon
-        #navbar-content.navbar-collapse.collapse
-          %nav.navbar-nav
-            = link_to '/', class: 'active nav-link' do
-              %i.bi-house-fill
-              Home
-          - if user_signed_in?
-            Logged in as #{current_user.username}
-            = link_to "Log out", destroy_user_session_path, method: :delete
-          - else
-            = link_to "Sign in", new_user_session_path
-            or
-            = link_to "Sign up", new_user_registration_path
-          - if user_signed_in?
-            = link_to "My Galleries", galleries_path, class: "btn btn-secondary"
-
-
-    - if flash.present?
-      .container-fluid.flash-messages
-        - flash.each do |message_type, message|
-          - next unless message_type == 'alert' || message_type == 'notice'
-          .alert{ class: "alert-#{ message_type == 'notice' ? 'success' : 'danger' }" }= message
+    = render 'layouts/header'
 
     %main
       .container-fluid
+        - if flash.present?
+          .container-fluid.flash-messages
+            - flash.each do |message_type, message|
+              - next unless message_type == 'alert' || message_type == 'notice'
+              .alert{ class: "alert-#{ message_type == 'notice' ? 'success' : 'danger' }" }= message
         = yield
-
-    %footer
-      .container-fluid
-        .d-flex.p-3
-          Footer text

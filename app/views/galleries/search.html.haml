@@ -1,0 +1,9 @@
+%h1 Search Results
+
+- if @galleries.any?
+  - @galleries.each do |gallery|
+    %div.mb-3
+      %h4= link_to gallery.title, gallery_path(gallery)
+      %p= truncate(gallery.description, length: 100)
+- else
+  %p No galleries found.

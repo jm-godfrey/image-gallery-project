@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   resources :galleries do
     resources :photos, only: [:create, :destroy]
   end
+
+  get '/search', to: 'galleries#search', as: 'search'
+
   # Defines the root path route ("/")
   root "pages#home"
 end

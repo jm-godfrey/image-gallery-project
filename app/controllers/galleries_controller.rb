@@ -36,6 +36,15 @@ class GalleriesController < ApplicationController
     redirect_to galleries_path, notice: "Gallery deleted."
   end
 
+  def search
+    @query = params[:query]
+    if @query.present?
+      @galleries = Gallery.where("title ILIKE ?", "%#{@query}%")
+    else
+      @galleries = Gallery.none
+    end
+  end
+
   private
 
   def gallery_params
