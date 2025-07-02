@@ -99,7 +99,7 @@ RSpec.describe GalleriesController, type: :controller do
 
     it "denies access to edit another user's gallery" do
       expect {
-        get :edit, params: { id: gallery.id }
+        patch :update, params: { id: gallery.id, gallery: { title: "Hacked" } }
       }.to raise_error(CanCan::AccessDenied)
     end
   end

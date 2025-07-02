@@ -5,7 +5,7 @@ class GalleriesController < ApplicationController
 
 
   def index
-    # doesn't use cancancan to generate galleries as it's only galleries owned by the user
+    # doesn't use cancancan to generate galleries as it's only galleries owned by the user needed
     @galleries = current_user.galleries.where.not(id: nil)
     @gallery = current_user.galleries.build
   end
