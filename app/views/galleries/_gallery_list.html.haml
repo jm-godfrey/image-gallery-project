@@ -5,16 +5,20 @@
       - first_photo = gallery.photos.first
 
       .gallery-tile
-        - if first_photo
+        = link_to gallery_path(gallery), class: "d-block position-relative" do
 
-          = link_to gallery_path(gallery), class: "d-block position-relative" do
-
+          - if first_photo
             = image_tag first_photo.image.variant(:thumbnail), class: "img-fluid gallery-image"
             .overlay-gradient
             .overlay-title= gallery.title
 
-          %p.small.text-muted.mt-1
-            by #{gallery.user.username}
+          - else
+            = image_pack_tag 'images/placeholder_thumbnail.jpg', height: 200, class: "img-fluid gallery-image"
+            .overlay-gradient
+            .overlay-title= gallery.title
+  
+        %p.small.text-muted.mt-1
+          by #{gallery.user.username}
 
 - else
   %div.text-center
