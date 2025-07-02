@@ -24,6 +24,12 @@ class Gallery < ApplicationRecord
 
   validates :title, presence: true, uniqueness: true, length: { minimum: 3, maximum: 20 }
 
+  has_many :likes, dependent: :destroy
+  has_many :liked_users, through: :likes, source: :user
+
+  has_many :bookmarks, dependent: :destroy
+  has_many :saved_users, through: :bookmarks, source: :user
+
 
   scope :publicly_visible, -> { where(private: false)}
 end

@@ -30,6 +30,13 @@ class User < ApplicationRecord
 
   has_many :galleries, dependent: :destroy
 
+  has_many :likes
+  has_many :liked_galleries, through: :likes, source: :gallery
+
+  has_many :bookmarks
+  has_many :saved_galleries, through: :bookmarks, source: :gallery
+
+
   def password_complexity
     return if password.blank?
 
