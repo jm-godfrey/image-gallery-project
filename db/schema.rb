@@ -42,6 +42,18 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_02_005513) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "bookings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "item_id", null: false
+    t.boolean "guest", default: false, null: false
+    t.datetime "start", null: false
+    t.datetime "finish", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_bookings_on_item_id"
+    t.index ["user_id"], name: "index_bookings_on_user_id"
+  end
+
   create_table "bookmarks", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "gallery_id", null: false
@@ -66,6 +78,38 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_02_005513) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
+  create_table "desk_to_allow_null_screens", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "desks", force: :cascade do |t|
+    t.bigint "item_id", null: false
+    t.string "name", null: false
+    t.bigint "screen_id"
+    t.boolean "arms", default: false, null: false
+    t.string "charging"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "notes"
+    t.index ["item_id"], name: "index_desks_on_item_id"
+    t.index ["screen_id"], name: "index_desks_on_screen_id"
+  end
+
+  create_table "favourite_desks", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "desk_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["desk_id"], name: "index_favourite_desks_on_desk_id"
+    t.index ["user_id"], name: "index_favourite_desks_on_user_id"
+  end
+
+  create_table "floor_plans", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "galleries", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -74,6 +118,12 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_02_005513) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_galleries_on_user_id"
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.string "item_type", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "likes", force: :cascade do |t|
@@ -90,6 +140,35 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_02_005513) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["gallery_id"], name: "index_photos_on_gallery_id"
+  end
+
+  create_table "room_to_allow_null_screens", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.bigint "item_id", null: false
+    t.string "name", null: false
+    t.bigint "screen_id"
+    t.string "charging"
+    t.integer "capacity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "notes"
+    t.index ["item_id"], name: "index_rooms_on_item_id"
+    t.index ["screen_id"], name: "index_rooms_on_screen_id"
+  end
+
+  create_table "screens", force: :cascade do |t|
+    t.string "description", null: false
+    t.boolean "windows", default: true, null: false
+    t.boolean "linux", default: true, null: false
+    t.boolean "mac", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name", null: false
+    t.index ["name"], name: "index_screens_on_name", unique: true
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -117,10 +196,16 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_02_005513) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "bookings", "items"
   add_foreign_key "bookmarks", "galleries"
   add_foreign_key "bookmarks", "users"
+  add_foreign_key "desks", "items"
+  add_foreign_key "desks", "screens"
+  add_foreign_key "favourite_desks", "desks"
   add_foreign_key "galleries", "users"
   add_foreign_key "likes", "galleries"
   add_foreign_key "likes", "users"
   add_foreign_key "photos", "galleries"
+  add_foreign_key "rooms", "items"
+  add_foreign_key "rooms", "screens"
 end
