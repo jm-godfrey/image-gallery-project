@@ -1,25 +1,52 @@
-- if @galleries.present?
-  .d-flex.flex-wrap.gap-3.justify-content-center.pt-3
+.d-flex.flex-wrap.gap-3.justify-content-center.pt-3
+  - @galleries.each do |gallery|
+    - first_photo = gallery.photos.first
 
-    - @galleries.each do |gallery|
-      - first_photo = gallery.photos.first
+    .gallery-tile.position-relative
+      = link_to gallery_path(gallery), class: "d-block position-relative" do
+        - if first_photo
+          = image_tag first_photo.image.variant(:thumbnail), class: "img-fluid gallery-image"
+        - else
+          = image_pack_tag 'images/placeholder_thumbnail.jpg', height: 200, class: "img-fluid gallery-image"
 
-      .gallery-tile
-        = link_to gallery_path(gallery), class: "d-block position-relative" do
+        .overlay-gradient
+        .overlay-title= gallery.title
 
-          - if first_photo
-            = image_tag first_photo.image.variant(:thumbnail), class: "img-fluid gallery-image"
-            .overlay-gradient
-            .overlay-title= gallery.title
+      %p.small.text-muted.mt-1
+        by #{gallery.user.username}
 
+      - if user_signed_in?
+        .gallery-actions.position-absolute.top-0.end-0.p-2
+          - if gallery.likes.exists?(user: current_user)
+            = link_to gallery_like_path(gallery),
+                method: :delete,
+                remote: true,
+                id:    "like-btn-#{gallery.id}",
+                class: "btn p-0 border-0 bg-transparent fs-5 gallery-like-btn",
+                data:  { turbo: false } do
+              %i.bi.bi-heart-fill.text-danger.fs-5
           - else
-            = image_pack_tag 'images/placeholder_thumbnail.jpg', height: 200, class: "img-fluid gallery-image"
-            .overlay-gradient
-            .overlay-title= gallery.title
-  
-        %p.small.text-muted.mt-1
-          by #{gallery.user.username}
+            = link_to gallery_like_path(gallery),
+                method: :post,
+                remote: true,
+                id:    "like-btn-#{gallery.id}",
+                class: "btn p-0 border-0 bg-transparent fs-5 gallery-like-btn",
+                data:  { turbo: false } do
+              %i.bi.bi-heart.text-white.fs-5
 
-- else
-  %div.text-center
-    %p No galleries created yet.
+          - if gallery.bookmarks.exists?(user: current_user)
+            = link_to gallery_bookmark_path(gallery),
+                method: :delete,
+                remote: true,
+                id:    "save-btn-#{gallery.id}",
+                class: "btn p-0 border-0 bg-transparent fs-5 gallery-bookmark-btn",
+                data:  { turbo: false } do
+              %i.bi.bi-bookmark-fill.text-warning.fs-5
+          - else
+            = link_to gallery_bookmark_path(gallery),
+                method: :post,
+                remote: true,
+                id:    "save-btn-#{gallery.id}",
+                class: "btn p-0 border-0 bg-transparent fs-5 gallery-bookmark-btn",
+                data:  { turbo: false } do
+              %i.bi.bi-bookmark.text-white.fs-5

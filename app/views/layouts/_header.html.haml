@@ -19,7 +19,7 @@
             = current_user.username
           %ul.dropdown-menu.dropdown-menu-end.mt-2.shadow{ aria: { labelledby: "userDropdown" } }
             %li= link_to "My Galleries", galleries_path, class: "dropdown-item"
-            // %li= link_to "My Saved", saved_galleries_path, class: "dropdown-item"
+            %li= link_to "My Saved", bookmarked_galleries_path, class: "dropdown-item"
             %li
               %hr.dropdown-divider
             %li= link_to "Log out", destroy_user_session_path, method: :delete, class: "dropdown-item text-danger"

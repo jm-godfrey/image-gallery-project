@@ -1,4 +1,8 @@
 %div.text-center
-    %h1 Search Results
+  %h1 Search Results
 
-= render 'galleries/gallery_list'
+- if @galleries.present? 
+  = render 'galleries/gallery_list'
+- else
+  %div.text-center
+    %p No search results found

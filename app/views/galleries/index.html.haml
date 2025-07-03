@@ -28,5 +28,9 @@
             = f.submit "Create Gallery", class: "btn btn-primary"
 
 -# displays all galleries associated with the current user
-= render 'galleries/gallery_list'
+- if @galleries.present? 
+  = render 'galleries/gallery_list'
+- else
+  %div.text-center
+    %p No galleries created yet.
 

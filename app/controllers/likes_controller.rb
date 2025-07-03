@@ -4,13 +4,22 @@ class LikesController < ApplicationController
 
   def create
     @gallery.likes.create(user: current_user)
-    redirect_to @gallery
+
+    respond_to do |format|
+      format.html { redirect_to @gallery }
+      format.js
+    end
   end
 
   def destroy
     @gallery.likes.find_by(user: current_user)&.destroy
-    redirect_to @gallery
+
+    respond_to do |format|
+      format.html { redirect_to @gallery }
+      format.js
+    end
   end
+
 
   private
 

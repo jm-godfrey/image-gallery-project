@@ -1,0 +1,8 @@
+%div.text-center
+  %h1 Saved galleries
+
+- if @galleries.present? 
+  = render "galleries/gallery_list", galleries: @galleries
+- else
+  %div.text-center
+    %p No saved galleries at the moment.

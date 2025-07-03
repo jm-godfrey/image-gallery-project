@@ -1,0 +1,10 @@
+document.getElementById("like-btn-<%= @gallery.id %>").outerHTML = `
+  <a href="/galleries/<%= @gallery.id %>/like"
+     data-remote="true"
+     data-method="delete"
+     id="like-btn-<%= @gallery.id %>"
+     class="btn p-0 border-0 bg-transparent fs-5 gallery-like-btn"
+     data-turbo="false">
+    <i class="bi bi-heart-fill text-danger fs-5"></i>
+  </a>
+`;

@@ -3,8 +3,10 @@
     %h1= @gallery.title
     %p.text-muted by #{@gallery.user.username}
     %p= @gallery.description
+    %p.text-muted
+      Likes: #{@gallery.likes.count}
 
-  - if user_signed_in? && @gallery.user == current_user
+  - if user_signed_in?
     .col-auto 
       .position-absolute.top-0.end-0.p-3
         .dropdown
@@ -12,17 +14,40 @@
             %i.bi.bi-three-dots.fs-5
 
           .dropdown-menu.dropdown-menu-end{ aria: { labelledby: "galleryActionsDropdown" } }
-            %button.dropdown-item{ data: { bs_toggle: "modal", bs_target: "#editGalleryModal" } }
-              %i.bi.bi-pencil.me-2
-              Edit Gallery
 
-            %button.dropdown-item{ data: { bs_toggle: "modal", bs_target: "#addPhotoModal" } }
-              %i.bi.bi-upload.me-2
-              Add Photo
+            -# Owner-only actions
+            - if @gallery.user == current_user
+              %button.dropdown-item{ data: { bs_toggle: "modal", bs_target: "#editGalleryModal" } }
+                %i.bi.bi-pencil.me-2
+                Edit Gallery
 
-            = link_to gallery_path(@gallery), method: :delete, data: { confirm: "Are you sure?" }, class: "dropdown-item text-danger" do
-              %i.bi.bi-trash.me-2
-              Delete Gallery
+              %button.dropdown-item{ data: { bs_toggle: "modal", bs_target: "#addPhotoModal" } }
+                %i.bi.bi-upload.me-2
+                Add Photo
+
+              = link_to gallery_path(@gallery), method: :delete, data: { confirm: "Are you sure?" }, class: "dropdown-item text-danger" do
+                %i.bi.bi-trash.me-2
+                Delete Gallery
+
+            -# like/unlike
+            - if @gallery.likes.exists?(user: current_user)
+              = button_to gallery_like_path(@gallery), method: :delete, form_class: "d-inline", class: "dropdown-item" do
+                %i.bi.bi-heart-fill.text-danger.me-2
+                Unlike
+            - else
+              = button_to gallery_like_path(@gallery), method: :post, form_class: "d-inline", class: "dropdown-item" do
+                %i.bi.bi-heart.me-2
+                Like
+
+            -# save/unsave
+            - if @gallery.bookmarks.exists?(user: current_user)
+              = button_to gallery_bookmark_path(@gallery), method: :delete, form_class: "d-inline", class: "dropdown-item" do
+                %i.bi.bi-bookmark-check-fill.text-warning.me-2
+                Unsave
+            - else
+              = button_to gallery_bookmark_path(@gallery), method: :post, form_class: "d-inline", class: "dropdown-item" do
+                %i.bi.bi-bookmark.me-2
+                Save
 
 
 -# loops through all photos and displays associated images

@@ -7,4 +7,8 @@
     your own
 
 -# displays all public galleries + your own private ones
-= render 'galleries/gallery_list'
+- if @galleries.present? 
+  = render 'galleries/gallery_list'
+- else
+  %div.text-center
+    %p No public galleries available
