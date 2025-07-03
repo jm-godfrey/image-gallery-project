@@ -32,4 +32,11 @@ class Gallery < ApplicationRecord
 
 
   scope :publicly_visible, -> { where(private: false)}
+
+  
+  scope :most_liked, -> {
+    left_joins(:likes)
+      .group(:id)
+      .order('COUNT(likes.id) DESC')
+  }
 end

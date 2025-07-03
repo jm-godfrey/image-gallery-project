@@ -21,5 +21,14 @@
 require 'rails_helper'
 
 RSpec.describe Gallery, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe '.most_liked' do
+    it 'orders galleries by like count descending' do
+      less_liked = create(:gallery)
+      more_liked = create(:gallery)
+      create_list(:like, 3, gallery: more_liked)
+      create_list(:like, 1, gallery: less_liked)
+
+      expect(Gallery.most_liked).to eq([more_liked, less_liked])
+    end
+  end
 end

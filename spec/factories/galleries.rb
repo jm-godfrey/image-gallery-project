@@ -20,9 +20,9 @@
 #
 FactoryBot.define do
   factory :gallery do
-    title { "MyString" }
+    sequence(:title) { |n| "Gallery #{n}" }
     description { "MyText" }
     private { false }
-    user { nil }
+    association :user
   end
 end
