@@ -1,3 +1,4 @@
+// Allows you to hide/show your password on log in / sign up
 document.addEventListener('DOMContentLoaded', () => {
     const toggleButton = document.getElementById('toggle-password');
     const toggleConfirmationButton = document.getElementById('toggle-password-confirmation');

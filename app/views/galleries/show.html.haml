@@ -6,15 +6,15 @@
     %p.text-muted
       Likes: #{@gallery.likes.count}
 
-  - if user_signed_in?
-    .col-auto 
-      .position-absolute.top-0.end-0.p-3
-        .dropdown
-          %button.btn.btn-sm.btn-outline-secondary.dropdown-toggle{ type: "button", id: "galleryActionsDropdown", data: { bs_toggle: "dropdown" }, aria: { expanded: "false" } }
-            %i.bi.bi-three-dots.fs-5
+  .col-auto 
+    .position-absolute.top-0.end-0.p-3
+      .dropdown
+        %button.btn.btn-sm.btn-outline-secondary.dropdown-toggle{ type: "button", id: "galleryActionsDropdown", data: { bs_toggle: "dropdown" }, aria: { expanded: "false" } }
+          %i.bi.bi-three-dots.fs-5
 
-          .dropdown-menu.dropdown-menu-end{ aria: { labelledby: "galleryActionsDropdown" } }
+        .dropdown-menu.dropdown-menu-end{ aria: { labelledby: "galleryActionsDropdown" } }
 
+          - if user_signed_in?
             -# Owner-only actions
             - if @gallery.user == current_user
               %button.dropdown-item{ data: { bs_toggle: "modal", bs_target: "#editGalleryModal" } }
@@ -29,7 +29,7 @@
                 %i.bi.bi-trash.me-2
                 Delete Gallery
 
-            -# like/unlike
+            -# like/unlike - logged in users
             - if @gallery.likes.exists?(user: current_user)
               = button_to gallery_like_path(@gallery), method: :delete, form_class: "d-inline", class: "dropdown-item" do
                 %i.bi.bi-heart-fill.text-danger.me-2
@@ -48,6 +48,11 @@
               = button_to gallery_bookmark_path(@gallery), method: :post, form_class: "d-inline", class: "dropdown-item" do
                 %i.bi.bi-bookmark.me-2
                 Save
+          
+          // Slideshow mode - all users should see this
+          %button.dropdown-item{ data: { bs_toggle: "modal", bs_target: "#slideshowModal" } }
+            %i.bi.bi-play-circle.me-2
+            View Slideshow
 
 
 -# loops through all photos and displays associated images
@@ -56,7 +61,9 @@
     - @photos.each do |photo|
       .gallery-tile.position-relative
         = link_to url_for(photo.image), class: "d-block position-relative photo-thumbnail-link", data: { bs_toggle: "modal", bs_target: "#photoModal-#{photo.id}" } do
-          = image_tag photo.image.variant(:thumbnail), class: "img-fluid gallery-image rounded"
+          = image_tag photo.image.variant(:thumbnail), 
+              class: "img-fluid gallery-image rounded",
+              data: { full_image_url: url_for(photo.image) }
           
           - if @gallery.user == current_user
             = link_to gallery_photo_path(@gallery, photo), method: :delete, data: { confirm: "Delete this photo?" }, class: "photo-delete-icon position-absolute top-0 end-0 m-1 p-1" do
@@ -101,3 +108,11 @@
         = simple_form_for [@gallery, Photo.new], html: { multipart: true, id: "add-photo-form" } do |f|
           = f.input :image, as: :file, required: true, input_html: { id: "photo-upload", class: "form-control", accept: "image/*" }, label: "Choose photos"
           = f.button :submit, "Upload", class: "btn btn-primary mt-2", disabled: true, id: "submit-photo-btn"
+
+-# modal for slideshow mode
+.modal.fade#slideshowModal{ tabindex: "-1", role: "dialog" }
+  .modal-dialog.modal-dialog-centered.modal-xl
+    .modal-content
+      .modal-body.p-0.position-relative
+        %img#slideshowImage.img-fluid.d-block.mx-auto{ src: "", alt: "Slideshow", style: "max-height: 80vh;" }
+        %button.btn.btn-light.position-absolute.top-0.end-0.m-3{"data-bs-dismiss" => "modal"} Close
